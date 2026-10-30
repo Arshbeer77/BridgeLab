@@ -1,0 +1,30 @@
+name: Build Windows portable
+on:
+  workflow_dispatch:
+jobs:
+  portable:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          architecture: x64
+      - name: Test source
+        run: python -m unittest discover -v
+      - name: Install build tool
+        run: python -m pip install PyInstaller==6.16.0
+      - name: Fetch pinned official scrcpy
+        shell: pwsh
+        run: |
+          Invoke-WebRequest 'https://github.com/Genymobile/scrcpy/releases/download/v5.0.1/scrcpy-win64-v5.0.1.zip' -OutFile scrcpy-win64-v5.0.1.zip
+          if ((Get-FileHash scrcpy-win64-v5.0.1.zip -Algorithm SHA256).Hash.ToLower() -ne 'b12a2c4ee8be317422451fc7dcf8ee20a71b5ea7ef9ad73ddd825a25316227a5') { throw 'scrcpy checksum mismatch' }
+      - name: Build and smoke test
+        run: python build_windows.py --scrcpy-zip scrcpy-win64-v5.0.1.zip --notices-dir licenses
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BridgeLab-v0.5-Windows-x64
+          path: dist/**
+          if-no-files-found: error

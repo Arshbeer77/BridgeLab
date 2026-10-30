@@ -1,0 +1,3 @@
+date,participant_code,phone_model,android_version,workflow,tool_or_baseline,transport,success,setup_seconds,task_seconds,manual_steps,extra_permission_prompts,issues,repeat_tomorrow
+2026-10-29,self,example_device,example_version,Send PDF to phone,baseline,USB,yes,,,,,,
+2026-10-29,self,example_device,example_version,Send PDF to phone,BridgeLab,USB,yes,,,,,,

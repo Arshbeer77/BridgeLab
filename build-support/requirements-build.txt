@@ -1,0 +1,4 @@
+# Builder only: Windows x64 CPython 3.12 with Tcl/Tk. Install from reviewed local
+# wheels, e.g. pip install --no-index --find-links C:\wheels -r requirements-build.txt
+# Resolve and retain all transitive wheel hashes in your release environment.
+PyInstaller==6.16.0
